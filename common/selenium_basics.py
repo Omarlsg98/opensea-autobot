@@ -6,8 +6,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
-from config import HEADLESS, TIMEOUT, PING, SECS_BEFORE_CLOSING, MAX_RETRIES, \
-    SECS_TO_RE_CLICK, INSTALLATION_DIR
+from config import chrome_arguments, TIMEOUT, PING, SECS_BEFORE_CLOSING, MAX_RETRIES, \
+    SECS_TO_RE_CLICK, DRIVER_PATH
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)s - #%(levelname)s - %(message)s')
@@ -124,10 +124,9 @@ def check_two_outputs(dr, xpath1, xpath2):
 
 def get_driver() -> webdriver:
     opts = Options()
-    if HEADLESS:
-        opts.add_argument("--headless")
-    opts.add_argument("--start-maximized")
-    driver_ = webdriver.Chrome(f"{INSTALLATION_DIR}/driver/chromedriver.exe",
+    for argument in chrome_arguments:
+        opts.add_argument(argument)
+    driver_ = webdriver.Chrome(DRIVER_PATH,
                                options=opts)
     return driver_
 

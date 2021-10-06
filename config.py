@@ -1,7 +1,8 @@
-HEADLESS = False
-
+# For colaboratory_env chrome_arguments = ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
+chrome_arguments = ['--headless', '--no-sandbox', '--disable-dev-shm-usage',]  # For local
 URL = "https://opensea.io"
 INSTALLATION_DIR = "C:\\repos\\OpenSea-autobot"
+DRIVER_PATH = f"{INSTALLATION_DIR}/driver/chromedriver.exe"
 
 TIMEOUT = 30  # in secs
 PING = 1  # in secs
@@ -20,7 +21,7 @@ MASTER_CONFIG = {
         "extract": {
             "users": {
                 "enabled": True,
-                "overwrite": True,
+                "overwrite": False,
                 "first_n_users": 1000,
                 "from/to": ["To"]
             },

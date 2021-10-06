@@ -48,7 +48,7 @@ class ProfileNavigator:
         socials = self.driver.find_elements_by_xpath("//a[contains(@class,'AccountHeader--social-container')]")
 
         if socials:
-            logging.info(f"Some socials found for {self.current_profile['name']}")
+            logging.info(f":O Some socials found for {self.current_profile['name']}")
             twitter = None
             instagram = None
             for social in socials:

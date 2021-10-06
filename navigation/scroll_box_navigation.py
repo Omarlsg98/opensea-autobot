@@ -1,14 +1,10 @@
 import logging
-import time
-from datetime import datetime
 
-import data
-from selenium.common.exceptions import StaleElementReferenceException, ElementClickInterceptedException
-from common.selenium_basics import scroll, wait_element_by_xpath
-from common.utils import append_to_csv, sleep_random
+from common.selenium_basics import scroll
 from common.selenium_context import SeleniumContext
-from config import SECS_TO_RE_CLICK, MAX_RETRIES
+from common.utils import sleep_random
 from objects.user import User
+from data import users_temp_path
 
 
 class ScrollBoxNavigator:
@@ -19,7 +15,7 @@ class ScrollBoxNavigator:
         self.context = context
 
         self.total_users = users_to_collect
-        self.users_found = set()
+        self.users_found = load_users()
 
     def get_users(self) -> set:
         """
@@ -57,3 +53,9 @@ class ScrollBoxNavigator:
 
         logging.info(f"All users from {self.context.name} collected successfully")
         return self.users_found
+
+    @staticmethod
+    def load_users():
+        users = set()
+        # TODO
+        return users

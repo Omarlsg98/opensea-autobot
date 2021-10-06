@@ -28,6 +28,7 @@ class SeleniumContext:
     def click_click_xpath(self, driver):
         driver.find_element_by_xpath(self.click_xpath).click()
 
+    # TODO refresh on error 504
     def go_there(self, driver):
         context_chain = self.get_context_chain()
         for node in context_chain:
