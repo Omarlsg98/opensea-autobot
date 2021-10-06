@@ -1,10 +1,10 @@
-env = $1
-case $env in
+environment=$1
+case $environment in
  colab)
   installation_path="/content/opensea-autobot"
-  driver_path = "$installation_path/driver/chromedriver"
+  driver_path="$installation_path/driver/chromedriver"
 
-  config_path = "$installation_path/config.py"
+  config_path="$installation_path/config.py"
   !sed -i "s|^INSTALLATION_DIR =.*$|INSTALLATION_DIR = $installation_path|g" $config_path
   !sed -i "s|^DRIVER_PATH =.*$|DRIVER_PATH = $driver_path|g" $config_path
   !sed -i "s|^chrome_arguments =.*$||g" $config_path
@@ -21,7 +21,7 @@ case $env in
   cp secret_config.py.template secret_config.py
  ;;
  *)
-  echo "ERROR: Environment not supported"
+  echo "ERROR: $environment environment not supported"
   exit 1
  ;;
 esac
