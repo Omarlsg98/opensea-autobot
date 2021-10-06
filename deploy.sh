@@ -5,10 +5,10 @@ case $environment in
   driver_path="$installation_path/driver/chromedriver"
 
   config_path="$installation_path/config.py"
-  !sed -i "s|^INSTALLATION_DIR =.*$|INSTALLATION_DIR = $installation_path|g" $config_path
-  !sed -i "s|^DRIVER_PATH =.*$|DRIVER_PATH = $driver_path|g" $config_path
-  !sed -i "s|^chrome_arguments =.*$||g" $config_path
-  !sed -i "s|^# For colaboratory_env chrome_arguments =|chrome_arguments =|g" $config_path
+  sed -i "s|^INSTALLATION_DIR =.*$|INSTALLATION_DIR = $installation_path|g" $config_path
+  sed -i "s|^DRIVER_PATH =.*$|DRIVER_PATH = $driver_path|g" $config_path
+  sed -i "s|^chrome_arguments =.*$||g" $config_path
+  sed -i "s|^# For colaboratory_env chrome_arguments =|chrome_arguments =|g" $config_path
 
   pip install /content/opensea-autobot/requirements.txt
   apt-get update
