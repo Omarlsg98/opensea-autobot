@@ -15,7 +15,7 @@ class ScrollBoxNavigator:
         self.context = context
 
         self.total_users = users_to_collect
-        self.users_found = load_users()
+        self.users_found = ScrollBoxNavigator.load_users()
 
     def get_users(self) -> set:
         """

@@ -5,7 +5,7 @@ from config import SECS_TO_RE_CLICK, TIMEOUT
 
 
 class SeleniumContext:
-    def __init__(self, name, url, wait_xpath=None, parent=None, click_xpath=None, wait_xpath_disappear=None):
+    def __init__(self, name=None, url=None, wait_xpath=None, parent=None, click_xpath=None, wait_xpath_disappear=None):
         if (not url and not click_xpath) or (not wait_xpath and not wait_xpath_disappear):
             raise Exception(f"Incorrect instantiation of an InstagramContext")
         self.name = name

@@ -4,10 +4,9 @@ import logging
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
 
 from config import chrome_arguments, TIMEOUT, PING, SECS_BEFORE_CLOSING, MAX_RETRIES, \
-    SECS_TO_RE_CLICK, DRIVER_PATH
+    SECS_TO_RE_CLICK, DRIVER_PATH, METAMASK_PATH
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)s - #%(levelname)s - %(message)s')
@@ -123,12 +122,29 @@ def check_two_outputs(dr, xpath1, xpath2):
 
 
 def get_driver() -> webdriver:
-    opts = Options()
+    opts = webdriver.ChromeOptions()
+    opts.add_extension(METAMASK_PATH)
     for argument in chrome_arguments:
         opts.add_argument(argument)
     driver_ = webdriver.Chrome(DRIVER_PATH,
-                               options=opts)
+                               chrome_options=opts)
     return driver_
+
+
+def wait_for_popup(dr, handles_before):
+    new_handles = handles_before
+    count = 0
+    while len(handles_before) == len(new_handles) and count < TIMEOUT:
+        new_handles = dr.window_handles
+        time.sleep(PING)
+        count += PING
+    if count >= TIMEOUT:
+        logging.error(f"The popup did not appear after {TIMEOUT} seconds")
+        raise TimeoutError()
+
+    for handle in dr.window_handles:
+        if handle not in handles_before:
+            return handle
 
 
 def closing_routine(dr):
