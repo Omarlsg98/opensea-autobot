@@ -12,11 +12,23 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)s - #%(levelname)s - %(message)s')
 
 
+def center_element_on_screen(dr, element):
+    js_center_element = """
+        var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        var elementTop = arguments[0].getBoundingClientRect().top;
+        window.scrollBy(0, elementTop-(viewPortHeight/2));
+        """
+    dr.execute_script(js_center_element, element)
+
+
 def write_text(dr, element, text):
-    for part in text.split('\n'):
-        element.send_keys(part)
-        ActionChains(dr).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform()
-    element.send_keys(Keys.RETURN)
+    js_add_text_to_input = """
+      var element = arguments[0], txt = arguments[1];
+      element.innerHTML = txt;
+      element.dispatchEvent(new Event('change'));
+      """
+    text = text.replace("\\n", "\n")
+    dr.execute_script(js_add_text_to_input, element, text)
 
 
 def hover(dr, element_to_hover_over):
@@ -24,7 +36,7 @@ def hover(dr, element_to_hover_over):
     hover_act.perform()
 
 
-def scroll(dr, down, intensity):
+def scroll(dr, down: bool, intensity: int):
     body = dr.find_element_by_xpath("/html/body")
     if intensity == 1:
         if down:
@@ -54,13 +66,16 @@ def click_with_retries(dr, xpath_click, xpath_confirmation):
     raise TimeoutError()
 
 
-def wait_element_by_xpath(dr, xpath, error_on_timeout=True, wait_time=TIMEOUT):
+def wait_element_by_xpath(dr, xpath, error_on_timeout=True, wait_time=TIMEOUT, return_all=False):
     secs_passed = 0
     while secs_passed < wait_time:
         elements_found = dr.find_elements_by_xpath(xpath)
         if len(elements_found) > 0:
             logging.debug(f"########### element found {xpath}")
-            return elements_found[0]
+            if return_all:
+                return elements_found
+            else:
+                return elements_found[0]
         time.sleep(PING)
         secs_passed += PING
     if error_on_timeout:
@@ -131,16 +146,24 @@ def get_driver() -> webdriver:
     return driver_
 
 
-def wait_for_popup(dr, handles_before):
+def wait_for_popup(dr, handles_before, error_on_timeout=True, wait_time=TIMEOUT, xpath_no_popup=None):
     new_handles = handles_before
     count = 0
-    while len(handles_before) == len(new_handles) and count < TIMEOUT:
+    while len(handles_before) == len(new_handles) and count < wait_time:
         new_handles = dr.window_handles
+        if xpath_no_popup:
+            if dr.find_elements_by_xpath(xpath_no_popup):
+                # Xpath that confirms that there was not any popup
+                return False
         time.sleep(PING)
         count += PING
-    if count >= TIMEOUT:
-        logging.error(f"The popup did not appear after {TIMEOUT} seconds")
-        raise TimeoutError()
+
+    if count >= wait_time:
+        if error_on_timeout:
+            logging.error(f"The popup did not appear after {wait_time} seconds")
+            raise TimeoutError()
+        else:
+            return False
 
     for handle in dr.window_handles:
         if handle not in handles_before:

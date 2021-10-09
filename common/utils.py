@@ -21,6 +21,15 @@ def beautify_list(list_: list) -> str:
     return str_
 
 
+def format_properties(properties: str):
+    prop_formatted = [[], []]
+    for val_pair in properties.split("|"):
+        val_pair = val_pair.split(":")
+        prop_formatted[0].append(val_pair[0])
+        prop_formatted[1].append(val_pair[1])
+    return prop_formatted
+
+
 def safe_str_to_int(string: str) -> int:
     characters_to_remove = " abcdefghijklmnñopqrstuvwxyz,"
     for character in characters_to_remove:
@@ -55,7 +64,7 @@ def create_csv_headers(file_path, headers):
             fd.write(headers)
 
 
-def append_to_csv(file_path, data, verbose):
+def append_to_csv(file_path, data, verbose=True):
     with open(file_path, 'a') as fd:
         fd.write(f"\n{data}")
         if verbose:
