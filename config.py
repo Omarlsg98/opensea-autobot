@@ -3,6 +3,7 @@ chrome_arguments = ['--start-maximized', ]  # For local
 
 URL = "https://opensea.io"
 INSTALLATION_DIR = "C:\\repos\\OpenSea-autobot"
+DATA_DIR = f"{INSTALLATION_DIR}/data"
 DRIVER_PATH = f"{INSTALLATION_DIR}/driver/chromedriver.exe"
 
 METAMASK_PATH = f"{INSTALLATION_DIR}/driver/10.2.0_0.crx"
