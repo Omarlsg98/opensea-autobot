@@ -2,15 +2,14 @@ import logging
 import os
 import time
 
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 import data
 from common.opensea_common import login
-from common.selenium_basics import get_driver, wait_element_by_xpath, wait_for_popup, write_text,\
-    center_element_on_screen
-import pandas as pd
-
+from common.selenium_basics import get_driver, wait_element_by_xpath, wait_for_popup, write_text_textarea, \
+    center_and_click
 from common.utils import format_properties, create_csv_headers, append_to_csv
 
 
@@ -20,8 +19,6 @@ def post(driver=None, logged=False):
 
     if not logged:
         login(driver)
-
-    wait_element_by_xpath(driver, "//div[@class='AccountHeader--title']")
 
     to_post = pd.read_csv(data.to_post_path)
     number_of_posts = len(to_post)
@@ -35,6 +32,7 @@ def post(driver=None, logged=False):
         to_post = to_post[to_post["url"].isnull()]
         del to_post["key"]
         del to_post["url"]
+
     for index, post_ in to_post.iterrows():
         index = index+1
         logging.info(f"{index}/{number_of_posts} -- Posting {post_['name']}")
@@ -54,18 +52,16 @@ def post(driver=None, logged=False):
         driver.execute_script("arguments[0].style.display = 'block';", inp_media)
         inp_media.send_keys(post_['media'])
 
+        # TODO: support emojis
         driver.find_element_by_xpath("//input[@id='name']").send_keys(post_['name'])
 
         if type(post_['external_link']) == str:
             driver.find_element_by_xpath("//input[@id='external_link']").send_keys(post_['external_link'])
 
         description_txt_area = driver.find_element_by_xpath("//textarea[@id='description']")
-        write_text(driver, description_txt_area, post_['description'])
-        description_txt_area.send_keys(" ")
+        write_text_textarea(driver, description_txt_area, post_['description'])
 
-        collection_inp = driver.find_element_by_xpath("//input[@placeholder = 'Select collection']")
-        center_element_on_screen(driver, collection_inp)
-        collection_inp.click()
+        center_and_click(driver, "//input[@placeholder = 'Select collection']")
         check = False
         for collection_btn in wait_element_by_xpath(driver, "//div[@data-tippy-root]//li/button", return_all=True):
             if collection_btn.text == post_["collection"]:
@@ -75,7 +71,7 @@ def post(driver=None, logged=False):
         if not check:
             raise Exception(f"Collection {post_['collection']} not found")
 
-        if post_["properties"]:
+        if type(post_['properties']) == str:
             properties = format_properties(post_["properties"])
             driver.find_element_by_xpath("//div[@class='AssetFormTraitSection--item']//i[@value='add']").click()
             add_btn = wait_element_by_xpath(driver, "//button[text()='Add more']")
@@ -89,9 +85,13 @@ def post(driver=None, logged=False):
 
             driver.find_element_by_xpath("//button[text()='Save']").click()
 
-        chain_inp = driver.find_element_by_xpath("//input[@id='chain']")
-        center_element_on_screen(driver, chain_inp)
-        chain_inp.click()
+        if type(post_['unlockable-content']) == str:
+            center_and_click(driver, "//input[@id='unlockable-content-toggle']")
+            time.sleep(0.1)
+            unlock_textarea = driver.find_element_by_xpath("//div[@class='AssetForm--unlockable-content']/textarea")
+            write_text_textarea(driver, unlock_textarea, post_['unlockable-content'])
+
+        chain_inp = center_and_click(driver, "//input[@id='chain']")
         time.sleep(0.1)
         for chain_btn in wait_element_by_xpath(driver, "//div[@data-tippy-root]//li/button", return_all=True):
             if post_["chain"] in chain_btn.text:
@@ -111,10 +111,7 @@ def post(driver=None, logged=False):
             supply_inp.send_keys(Keys.DELETE)
             supply_inp.send_keys(post_['supply'])
 
-        create_btn = driver.find_element_by_xpath("//button[text()='Create']")
-        center_element_on_screen(driver, create_btn)
-        create_btn.click()
-
+        center_and_click(driver, "//button[text()='Create']")
         wait_element_by_xpath(driver, "//h4[contains(text(),'You created')]")
 
         webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()

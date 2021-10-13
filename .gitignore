@@ -1,8 +1,12 @@
 secret_config.py
 .idea/
 driver/chromedriver.exe
+driver/chromedriver.exe.92
 /data/*/*.csv
+env.sh
 
+node_modules
+package-lock.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

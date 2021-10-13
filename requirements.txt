@@ -1,4 +1,4 @@
 pandas
 numpy
 selenium
-beautifulsoup4
+undetected-chromedriver

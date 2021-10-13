@@ -1,12 +1,13 @@
 import time
 import logging
 
+import undetected_chromedriver.v2 as uc
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
 from config import chrome_arguments, TIMEOUT, PING, SECS_BEFORE_CLOSING, MAX_RETRIES, \
-    SECS_TO_RE_CLICK, DRIVER_PATH, METAMASK_PATH
+    SECS_TO_RE_CLICK, DRIVER_PATH, METAMASK_PATH, undetected_chrome, und_chrome_arguments
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)s - #%(levelname)s - %(message)s')
@@ -21,7 +22,7 @@ def center_element_on_screen(dr, element):
     dr.execute_script(js_center_element, element)
 
 
-def write_text(dr, element, text):
+def write_text_textarea(dr, element, text):
     js_add_text_to_input = """
       var element = arguments[0], txt = arguments[1];
       element.innerHTML = txt;
@@ -29,6 +30,7 @@ def write_text(dr, element, text):
       """
     text = text.replace("\\n", "\n")
     dr.execute_script(js_add_text_to_input, element, text)
+    element.send_keys(".")
 
 
 def hover(dr, element_to_hover_over):
@@ -50,6 +52,13 @@ def scroll(dr, down: bool, intensity: int):
             body.send_keys(Keys.HOME)
     else:
         raise Exception("Invalid intensity")
+
+
+def center_and_click(dr, xpath_click):
+    element = dr.find_element_by_xpath(xpath_click)
+    center_element_on_screen(dr, element)
+    element.click()
+    return element
 
 
 def click_with_retries(dr, xpath_click, xpath_confirmation):
@@ -137,12 +146,18 @@ def check_two_outputs(dr, xpath1, xpath2):
 
 
 def get_driver() -> webdriver:
-    opts = webdriver.ChromeOptions()
-    opts.add_extension(METAMASK_PATH)
-    for argument in chrome_arguments:
-        opts.add_argument(argument)
-    driver_ = webdriver.Chrome(DRIVER_PATH,
-                               chrome_options=opts)
+    if undetected_chrome:
+        opts = uc.ChromeOptions()
+        for argument in und_chrome_arguments:
+            opts.add_argument(argument)
+        driver_ = uc.Chrome(options=opts)
+    else:
+        opts = webdriver.ChromeOptions()
+        opts.add_extension(METAMASK_PATH)
+        for argument in chrome_arguments:
+            opts.add_argument(argument)
+        driver_ = webdriver.Chrome(DRIVER_PATH,
+                                   chrome_options=opts)
     return driver_
 
 

@@ -1,11 +1,7 @@
 import logging
-import pandas as pd
 
-import data
-from common.selenium_basics import scroll
 from common.selenium_context import SeleniumContext
-from config import MASTER_CONFIG, METAMASK_ID
-from navigation.scroll_box_navigation import ScrollBoxNavigator
+from config import METAMASK_ID
 from secret_config import SECRET_RECOVERY_PHRASE, NEW_PASSWORD
 
 
@@ -53,9 +49,12 @@ class MetamaskNavigator:
         logging.info("Successfully Metamask logging")
 
     def switch_to_metamask(self):
-        for window in self.driver.window_handles:
-            if self.driver.title != "MetaMask":
-                self.driver.switch_to.window(window)
-            else:
-                self.metamask_window_handle = self.driver.current_window_handle
-                break
+        if len(self.driver.window_handles) > 1:
+            for window in self.driver.window_handles:
+                if self.driver.title != "MetaMask":
+                    self.driver.switch_to.window(window)
+                else:
+                    self.metamask_window_handle = self.driver.current_window_handle
+                    break
+        else:
+            self.driver.get(f"chrome-extension://{METAMASK_ID}/home.html")

@@ -6,6 +6,21 @@ import os.path as path
 import logging
 
 from config import SECS_RANGE_FOR_CLICKS
+import decimal
+
+# create a new context for this task
+ctx = decimal.Context()
+
+ctx.prec = 20
+
+
+def float_to_str(f):
+    """
+    Convert the given float to a string,
+    without resorting to scientific notation
+    """
+    d1 = ctx.create_decimal(repr(f))
+    return format(d1, 'f')
 
 
 def beautify_list(list_: list) -> str:

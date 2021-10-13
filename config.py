@@ -1,5 +1,9 @@
-# For colaboratory_env chrome_arguments = ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
-chrome_arguments = ['--start-maximized', ]  # For local
+undetected_chrome = False
+user_chrome_dir = "c:/temp/open_sea"
+chrome_arguments = ['--start-maximized']
+und_chrome_arguments = ['--start-maximized',] # "--disable-blink-features=AutomationControlled"  f'--user-data-dir={user_chrome_dir}',
+                        #'--no-first-run --no-service-autorun --password-store=basic']
+
 
 URL = "https://opensea.io"
 INSTALLATION_DIR = "C:\\repos\\OpenSea-autobot"
@@ -8,6 +12,7 @@ DRIVER_PATH = f"{INSTALLATION_DIR}/driver/chromedriver.exe"
 METAMASK_PATH = f"{INSTALLATION_DIR}/driver/10.2.0_0.crx"
 METAMASK_ID = "nkbihfbeogaeaoehlefnkodbefgpgknn"
 
+LOGIN_TIMEOUT = 140
 TIMEOUT = 30  # in secs
 PING = 1  # in secs
 
