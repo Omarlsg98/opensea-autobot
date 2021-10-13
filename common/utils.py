@@ -80,7 +80,7 @@ def create_csv_headers(file_path, headers):
 
 
 def append_to_csv(file_path, data, verbose=True):
-    with open(file_path, 'a') as fd:
+    with open(file_path, 'a', encoding="utf-8") as fd:
         fd.write(f"\n{data}")
         if verbose:
             logging.info(f"Data appended to {file_path}")

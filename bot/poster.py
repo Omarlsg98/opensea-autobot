@@ -8,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 
 import data
 from common.opensea_common import login
-from common.selenium_basics import get_driver, wait_element_by_xpath, wait_for_popup, write_text_textarea, \
+from common.selenium_basics import get_driver, wait_element_by_xpath, wait_for_popup, write_text, \
     center_and_click
 from common.utils import format_properties, create_csv_headers, append_to_csv
 
@@ -52,14 +52,14 @@ def post(driver=None, logged=False):
         driver.execute_script("arguments[0].style.display = 'block';", inp_media)
         inp_media.send_keys(post_['media'])
 
-        # TODO: support emojis
-        driver.find_element_by_xpath("//input[@id='name']").send_keys(post_['name'])
+        name_inp = driver.find_element_by_xpath("//input[@id='name']")
+        write_text(driver, name_inp, post_['name'], is_text_area=False)
 
         if type(post_['external_link']) == str:
             driver.find_element_by_xpath("//input[@id='external_link']").send_keys(post_['external_link'])
 
         description_txt_area = driver.find_element_by_xpath("//textarea[@id='description']")
-        write_text_textarea(driver, description_txt_area, post_['description'])
+        write_text(driver, description_txt_area, post_['description'])
 
         center_and_click(driver, "//input[@placeholder = 'Select collection']")
         check = False
@@ -89,7 +89,7 @@ def post(driver=None, logged=False):
             center_and_click(driver, "//input[@id='unlockable-content-toggle']")
             time.sleep(0.1)
             unlock_textarea = driver.find_element_by_xpath("//div[@class='AssetForm--unlockable-content']/textarea")
-            write_text_textarea(driver, unlock_textarea, post_['unlockable-content'])
+            write_text(driver, unlock_textarea, post_['unlockable-content'])
 
         chain_inp = center_and_click(driver, "//input[@id='chain']")
         time.sleep(0.1)

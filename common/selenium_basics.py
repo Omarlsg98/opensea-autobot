@@ -22,15 +22,23 @@ def center_element_on_screen(dr, element):
     dr.execute_script(js_center_element, element)
 
 
-def write_text_textarea(dr, element, text):
-    js_add_text_to_input = """
-      var element = arguments[0], txt = arguments[1];
-      element.innerHTML = txt;
-      element.dispatchEvent(new Event('change'));
-      """
+def write_text(dr, element, text, is_text_area=True):
+    if is_text_area:
+        js_add_text_to_input = """
+            var element = arguments[0], txt = arguments[1];
+            element.innerHTML = txt;
+            element.dispatchEvent(new Event('change'));
+            """
+    else:
+        js_add_text_to_input = """
+            var element = arguments[0], txt = arguments[1];
+            element.value = txt;
+            element.dispatchEvent(new Event('change'));
+            """
+
     text = text.replace("\\n", "\n")
     dr.execute_script(js_add_text_to_input, element, text)
-    element.send_keys(".")
+    element.send_keys(" " + Keys.BACKSPACE)
 
 
 def hover(dr, element_to_hover_over):
