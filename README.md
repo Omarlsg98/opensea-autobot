@@ -32,7 +32,9 @@ It also **posts and lists automatically** new NFTs on OpenSea :3
    with the info of the NFT you want to post and list.
    
 1. Execute main.py -m post list
-   >Note: you can just post using "-m post" or just list using "-m list"
+   >**Note:**
+   > * You can just post using "-m post" or just list using "-m list"
+   > * You can use -b {number of NFTs} if you just want to post that number on NFTs at the moment
 1. See the results of the process in output/posted.csv and output/listed.csv
 ---
 ###To extract social media 

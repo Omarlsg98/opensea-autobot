@@ -13,7 +13,7 @@ from common.selenium_basics import get_driver, wait_element_by_xpath, wait_for_p
 from common.utils import format_properties, create_csv_headers, append_to_csv
 
 
-def post(driver=None, logged=False):
+def post(driver=None, logged=False, batch_size=-1):
     if not driver:
         driver = get_driver()
 
@@ -34,7 +34,9 @@ def post(driver=None, logged=False):
         del to_post["url"]
 
     for index, post_ in to_post.iterrows():
-        index = index+1
+        if batch_size == 0:
+            break
+        index = index + 1
         logging.info(f"{index}/{number_of_posts} -- Posting {post_['name']}")
         handles_before = driver.window_handles
         driver.find_element_by_xpath("//a[contains(@href,'asset/create')]").click()
@@ -126,6 +128,7 @@ def post(driver=None, logged=False):
                       f"{post_['collection']},{post_['name']},{post_url}")
 
         logging.info(f"{index}/{number_of_posts} -- Successfully posted  {post_['name']}")
+        batch_size -= 1
 
     logging.info(f"SUCCESSFUL execution, all the posting jobs were done")
 

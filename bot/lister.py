@@ -24,7 +24,7 @@ def list_all(driver=None, logged=False):
     posted = pd.read_csv(data.posted_path)
     posted["key"] = posted["collection"] + "/" + posted["name"]
     to_post["key"] = to_post["collection"] + "/" + to_post["name"]
-    to_post = pd.merge(to_post, posted[['key', 'url']], on='key', how='left')
+    to_post = pd.merge(to_post, posted[['key', 'url']], on='key', how='inner')
 
     if os.path.isfile(data.listed_path):
         listed = pd.read_csv(data.listed_path)
