@@ -48,9 +48,9 @@ def post(driver=None, logged=False):
             driver.find_element_by_xpath("//button[text()='Sign']").click()
             driver.switch_to.window(opensea_window)
 
-        inp_media = wait_element_by_xpath(driver, "//input[@id='media']")
-        driver.execute_script("arguments[0].style.display = 'block';", inp_media)
-        inp_media.send_keys(post_['media'])
+        media_inp = wait_element_by_xpath(driver, "//input[@id='media']")
+        driver.execute_script("arguments[0].style.display = 'block';", media_inp)
+        media_inp.send_keys(post_['media'])
 
         name_inp = driver.find_element_by_xpath("//input[@id='name']")
         write_text(driver, name_inp, post_['name'], is_text_area=False)
@@ -60,6 +60,11 @@ def post(driver=None, logged=False):
 
         description_txt_area = driver.find_element_by_xpath("//textarea[@id='description']")
         write_text(driver, description_txt_area, post_['description'])
+
+        if type(post_['preview']) == str:
+            preview_inp = wait_element_by_xpath(driver, "//input[@name='preview']")
+            driver.execute_script("arguments[0].style.display = 'block';", preview_inp)
+            preview_inp.send_keys(post_['preview'])
 
         center_and_click(driver, "//input[@placeholder = 'Select collection']")
         check = False

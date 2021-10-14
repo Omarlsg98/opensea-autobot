@@ -1,2 +1,2 @@
-media,name,external_link,description,collection,properties,supply,chain,unlockable-content,list_n,price
-C:\\path\\to the\\nft\\1.png,This is the name,,This is a test 😋\nI hope this works,Tests,background:white|type:stick,10,Polygon,this is a surprise,-1,0.5
+media,preview,name,external_link,description,collection,properties,supply,chain,unlockable-content,list_n,price
+C:\\path\\to the\\nft\\1.mp4,C:\\path\\to the\\nft\\1_preview.png,This is the name,,This is a test 😋\nI hope this works,Tests,background:white|type:stick,10,Polygon,this is a surprise,-1,0.5

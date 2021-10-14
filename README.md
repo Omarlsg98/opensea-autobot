@@ -31,7 +31,8 @@ It also **posts and lists automatically** new NFTs on OpenSea :3
 1. Use the data/input/to_post.csv.template to create a to_post.csv 
    with the info of the NFT you want to post and list.
    
-1. Execute main.py
+1. Execute main.py -m post list
+   >Note: you can just post using "-m post" or just list using "-m list"
 1. See the results of the process in output/posted.csv and output/listed.csv
 ---
 ###To extract social media 
@@ -65,5 +66,5 @@ It also **posts and lists automatically** new NFTs on OpenSea :3
     }
     ```
    Probably, you just want to change "first_n_users": the amount of users to check in each activity
-1. Uncomment "scrap()" on main.py, comment the other commands and execute that file (args who knows you :v)
+1. Run python main.py -m scrap
 1. See the results on output/users.csv 

@@ -1,5 +1,6 @@
 import logging
 
+from common.selenium_basics import wait_element_by_xpath
 from common.selenium_context import SeleniumContext
 from config import METAMASK_ID
 from secret_config import SECRET_RECOVERY_PHRASE, NEW_PASSWORD
@@ -16,7 +17,7 @@ class MetamaskNavigator:
     def setup(self):
         driver = self.driver
         self.switch_to_metamask()
-        driver.find_element_by_xpath('//button[text()="Get Started"]').click()
+        wait_element_by_xpath(driver, '//button[text()="Get Started"]').click()
         driver.find_element_by_xpath('//button[text()="Import wallet"]').click()
 
         self.context = SeleniumContext(click_xpath="//button[text()='No Thanks']",

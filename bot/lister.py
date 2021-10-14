@@ -47,10 +47,11 @@ def list_all(driver=None, logged=False):
             driver.get(f'{post_["url"]}/sell')
             wait_any_element_to_have_text(driver, "//div[contains(@class,'AssetSellPreviewFooter--name')]", post_['name'])
 
-            quantity_inp = driver.find_element_by_xpath("//input[@id='quantity']")
-            quantity_inp.send_keys(Keys.CONTROL + "a")
-            quantity_inp.send_keys(Keys.DELETE)
-            quantity_inp.send_keys(list_n)
+            if post_["supply"] > 1:
+                quantity_inp = driver.find_element_by_xpath("//input[@id='quantity']")
+                quantity_inp.send_keys(Keys.CONTROL + "a")
+                quantity_inp.send_keys(Keys.DELETE)
+                quantity_inp.send_keys(list_n)
 
             driver.find_element_by_xpath("//input[@id='price']").send_keys(float_to_str(post_['price']))
 
