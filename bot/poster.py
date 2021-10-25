@@ -70,6 +70,7 @@ def post(driver=None, logged=False, batch_size=-1):
 
         center_and_click(driver, "//input[@placeholder = 'Select collection']")
         check = False
+        time.sleep(0.1)
         for collection_btn in wait_element_by_xpath(driver, "//div[@data-tippy-root]//li/button", return_all=True):
             if collection_btn.text == post_["collection"]:
                 collection_btn.click()

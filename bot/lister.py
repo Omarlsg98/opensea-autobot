@@ -53,7 +53,7 @@ def list_all(driver=None, logged=False):
                 quantity_inp.send_keys(Keys.DELETE)
                 quantity_inp.send_keys(list_n)
 
-            driver.find_element_by_xpath("//input[@id='price']").send_keys(float_to_str(post_['price']))
+            driver.find_element_by_xpath("//input[@name='price']").send_keys(float_to_str(post_['price']))
 
             center_and_click(driver, "//button[text()='Complete listing']")
             
