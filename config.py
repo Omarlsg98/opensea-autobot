@@ -1,6 +1,6 @@
 undetected_chrome = False
 user_chrome_dir = "c:/temp/open_sea"
-chrome_arguments = ['--start-maximized']
+chrome_arguments = ['--start-maximized', "--lang=en"]
 und_chrome_arguments = ['--start-maximized',] # "--disable-blink-features=AutomationControlled"  f'--user-data-dir={user_chrome_dir}',
                         #'--no-first-run --no-service-autorun --password-store=basic']
 

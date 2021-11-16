@@ -42,7 +42,7 @@ def post(driver=None, logged=False, batch_size=-1):
         driver.find_element_by_xpath("//a[contains(@href,'asset/create')]").click()
 
         popup_handle = wait_for_popup(driver, handles_before,
-                                      xpath_no_popup="//header[@class='CollectionManager--header-container']")
+                                      xpath_no_popup="//input[@id='external_link']")
         if popup_handle:
             opensea_window = driver.current_window_handle
             driver.switch_to.window(popup_handle)
