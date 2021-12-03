@@ -20,5 +20,5 @@ def login(driver):
     driver.find_element_by_xpath('//button[text()="Connect"]').click()
     driver.switch_to.window(opensea_window)
 
-    wait_element_by_xpath(driver, "//div[@class='AccountHeader--title']")
+    wait_element_by_xpath(driver, "//div[contains(@class,'AccountHeader--title')]")
     logging.info("Successfully logged on opensea ")
