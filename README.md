@@ -5,7 +5,8 @@ You have to make sure your NFTs are seen by the big fish.
 
 It also **posts and lists automatically** new NFTs on OpenSea :3
 >***Note:** To post you must have an account, and the secret phrase to that account*
-##Install
+
+## Install
 1. You have to download the chromewebdriver that works with your 
     version of chrome and put it in the driver/ folder
    
@@ -20,8 +21,8 @@ It also **posts and lists automatically** new NFTs on OpenSea :3
    ```
    
 ---
-##Use
-###To post and list NFT
+## Use
+### To post and list NFT
 1. Use secret_config.py.template to create secret_config.py. put there 
    your metamask credentials
    ```python
@@ -37,7 +38,7 @@ It also **posts and lists automatically** new NFTs on OpenSea :3
    > * You can use -b {number of NFTs} if you just want to post that number on NFTs at the moment
 1. See the results of the process in output/posted.csv and output/listed.csv
 ---
-###To extract social media 
+### To extract social media 
 1. Use the data/input/activities.csv.template to create a activities.csv. 
    Here you must put a list of the activities (opensea URLs with /activity/ in it)
    that you are interested on getting info. Also put a name to the URL, just for your reference.
